@@ -13,7 +13,7 @@ jobs:
       run: docker build . --file Dockerfile --tag evryfs/docker-baseimage:$(date +%s)
     - run: echo ::set-output name=tag_name::$(head -1 Dockerfile | awk '{print $2}' | tr ':' ' '| awk '{print $2}')
       id: tagName
-    - uses: anothrNick/github-tag-action@1.35.0
+    - uses: anothrNick/github-tag-action@1.36.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_BRANCHES: master,bionic
