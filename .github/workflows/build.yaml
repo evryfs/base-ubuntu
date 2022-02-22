@@ -8,6 +8,11 @@ on:
   pull_request:
 jobs:
   build:
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      IMAGE: quay.io/evryfs/base-ubuntu
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -19,7 +24,7 @@ jobs:
       with:
         # list of Docker images to use as base name for tags
         images: |
-          quay.io/evryfs/base-ubuntu
+          ${{ env.IMAGE }}
         # generate Docker tags based on the following events/attributes
         tags: |
           type=ref,event=tag
@@ -40,3 +45,10 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+    - uses: sigstore/cosign-installer@v2.0.1
+    - name: cosign
+      if: ${{ github.event_name != 'pull_request' }}
+      env:
+        COSIGN_EXPERIMENTAL: 1
+      #run: cosign sign --oidc-issuer ${env.ACTIONS_ID_TOKEN_REQUEST_URL} ${{ env.IMAGE }}
+      run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ env.IMAGE }}
