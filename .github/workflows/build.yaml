@@ -45,7 +45,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
     - uses: sigstore/cosign-installer@v1.2.1
     - name: cosign
-      #if: ${{ github.event_name != 'pull_request' }}
+      if: ${{ github.event_name != 'pull_request' }}
       env:
         COSIGN_EXPERIMENTAL: 1
       #run: cosign sign -oidc-issuer ${ACTIONS_ID_TOKEN_REQUEST_URL} ${{ steps.meta.outputs.tags }}
