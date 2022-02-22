@@ -11,6 +11,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      IMAGE: quay.io/evryfs/base-ubuntu
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -22,7 +24,7 @@ jobs:
       with:
         # list of Docker images to use as base name for tags
         images: |
-          quay.io/evryfs/base-ubuntu
+          ${{ env.IMAGE }}
         # generate Docker tags based on the following events/attributes
         tags: |
           type=ref,event=tag
@@ -49,4 +51,4 @@ jobs:
       env:
         COSIGN_EXPERIMENTAL: 1
       #run: cosign sign -oidc-issuer ${ACTIONS_ID_TOKEN_REQUEST_URL} ${{ steps.meta.outputs.tags }}
-      run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com quay.io/evryfs/base-ubuntu
+      run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ env.IMAGE }}
