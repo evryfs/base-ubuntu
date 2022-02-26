@@ -52,4 +52,4 @@ jobs:
       env:
         COSIGN_EXPERIMENTAL: 1
       #run: cosign sign --oidc-issuer ${env.ACTIONS_ID_TOKEN_REQUEST_URL} ${{ env.IMAGE }}
-      run: cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ steps.meta.outputs.tags }}
+      run: for image in ${{ steps.meta.outputs.tags }}; do cosign sign --oidc-issuer https://token.actions.githubusercontent.com $image;done
