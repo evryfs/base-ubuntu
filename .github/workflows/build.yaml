@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - uses: brpaz/hadolint-action@v1.5.0
     - name: Docker meta
       id: meta
@@ -30,6 +30,16 @@ jobs:
           type=ref,event=tag
           type=ref,event=branch
           type=ref,event=pr
+          type=sha
+    - name: Docker meta
+      id: metasha
+      uses: docker/metadata-action@v3
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          ${{ env.IMAGE }}
+        # generate Docker tags based on the following events/attributes
+        tags: |
           type=sha
     - name: Login to quay.io
       if: github.event_name != 'pull_request'
@@ -46,12 +56,12 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-    - uses: sigstore/cosign-installer@v2.0.1
+    - uses: sigstore/cosign-installer@v2.1.0
     - name: cosign
       if: ${{ github.event_name != 'pull_request' }}
       env:
         COSIGN_EXPERIMENTAL: 1
       #run: cosign sign --oidc-issuer ${env.ACTIONS_ID_TOKEN_REQUEST_URL} ${{ env.IMAGE }}
       run: |
-        cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ env.IMAGE }}@${{ steps.build-push.outputs.digest }}
-        cosign verify ${{ env.IMAGE }}@${{ steps.build-push.outputs.digest }}
+        cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ steps.metasha.outputs.tags }}
+        cosign verify ${{ steps.metasha.outputs.tags }}
