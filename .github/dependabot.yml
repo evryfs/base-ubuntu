@@ -12,9 +12,4 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-  target-branch: focal
-- package-ecosystem: docker
-  directory: "/"
-  schedule:
-    interval: daily
   target-branch: bionic
