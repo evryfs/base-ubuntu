@@ -1,4 +1,4 @@
-FROM ubuntu:bionic-20220913
+FROM ubuntu:bionic-20221019
 LABEL maintainer "fsdevops@evry.com"
 #avoid interactive dialouges from apt:
 ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
