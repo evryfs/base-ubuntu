@@ -1,4 +1,4 @@
-FROM ubuntu:jammy-20221003
+FROM ubuntu:jammy-20221020
 LABEL maintainer "fsdevops@evry.com"
 #avoid interactive dialouges from apt:
 ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
