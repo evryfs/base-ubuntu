@@ -1,4 +1,4 @@
-FROM ubuntu:focal-20231003
+FROM ubuntu:focal-20231128
 LABEL maintainer "fsdevops@evry.com"
 #avoid interactive dialouges from apt:
 ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
