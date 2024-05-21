@@ -68,5 +68,5 @@ jobs:
         COSIGN_EXPERIMENTAL: 1
       #run: cosign sign --oidc-issuer ${env.ACTIONS_ID_TOKEN_REQUEST_URL} ${{ env.IMAGE }}
       run: |
-        cosign sign --oidc-issuer https://token.actions.githubusercontent.com ${{ steps.metasha.outputs.tags }}
+        cosign sign -y --oidc-issuer https://token.actions.githubusercontent.com ${{ steps.metasha.outputs.tags }}
         cosign verify ${{ steps.metasha.outputs.tags }}
